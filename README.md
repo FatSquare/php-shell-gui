@@ -17,9 +17,10 @@ this is just a beta version. Please report any mistake you've encountered.
 <br>
 
 
-## Shell-preview
+## Shell-showcase
 
 ![Shell-preview](./readmed/shell1.png)
+![Shell-preview](./readmed/shell2.png)
 
 <br>
 
