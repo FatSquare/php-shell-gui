@@ -20,7 +20,6 @@ this is just a beta version. Please report any mistake you've encountered.
 ## Shell-showcase
 
 ![Shell-preview](./readmed/shell1.png)
-![Shell-preview](./readmed/shell2.png)
 
 <br>
 
@@ -42,21 +41,6 @@ php -S localhost:3000 shell.php
 
 ## Usage
 
-The first black input will take whatever command you give it, execute it and print the results.
+After running the script you can start typing your commands in terminal and get input.
+You can click the RESET button to clear your path(location)
 
-However typing something like :
-
-```bash
-# this will list the files in the download directory
-
-$ cd Downloads/;ls;
-```
-```bash
-# this will list the files in the old directory
-
-$ cd Downloads/
-$ ls;
-```
-Will work but won't save the new path for the next line. so typing ls again will actually print the old path
-To fix that you can type your cd commands in the green input field (if you want to)
-i will try to remove the green input and save the new directory when you type the command in the first input
